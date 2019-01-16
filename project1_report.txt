@@ -1,0 +1,23 @@
+1. Basic information
+Student ID : 
+Student Name : 
+OS (bit) :
+gcc version :
+
+
+2. Internal Record Format
+- Show your record format design and describe how your design satisfies O(1) field access. If not, just mention that you haven't implemented this feature.
+- Describe how you store a VarChar field.
+
+
+3. Page Format
+- Show your page format design
+
+
+4. Implementation Detail
+- Other implementation details goes here.
+
+
+5. Other (optional)
+- Freely use this section to tell us about things that are related to the project 1, but not related to the other sections (optional)
+

@@ -1,0 +1,83 @@
+1. Basic information
+Team number (e.g., 01) : 11
+#1 Student ID : 47335412
+#1 Student Name : Ziyuan Cui
+#2 Student ID : 78162510
+#2 Student Name : Zhongwei Wang
+OS (bit) : MacOS 10.14
+gcc version : gcc 4.8.5
+
+
+2. Meta-data page in an index file
+- Show your meta-data page of an index design if you have any. 
+
+Hidden Page:
+    Header: int Number of Page | int readCounter | int writeCounter | int appendCounter | rootPageNum |
+
+
+3. Index Entry Format
+- Show your index entry design (structure). 
+    - Each index entry is basically a <key, rid> pair:
+        -specifically, the key could be Varchar. Int and Real, Int and Real both take 4 bytes. For the Varchar,
+        its length will be prefixed to the key.
+    - Index entry only stores in the leaf nodes. Non-leaf nodes store keys and pointers(pageID) of next layer's 
+    nodes.
+    - The search will start from the root node and eventually locate the specific <key, rid> pair in leaf nodes.
+
+
+4. Page Format
+- Show your internal-page (non-leaf node) design.
+    - Page Header: first 10 bytes of a page include
+        bool isLeaf; -- determine whether this page is leaf or non-leaf
+        short freespace; -- determine how much freespace available in this page
+        short parentNodeId; -- determine the parent node of this non-leaf node 
+        short startOffset; -- the position to insert new record
+        short slotNum; -- the number of slots
+    - Page Tail: [slot][slot][slot]
+        Slot:
+            short offset; -- offset of each record
+            short rLeng; -- length of each record
+    - Page Content: IndexPair <key, rid>
+        childNodeID -- an integer to indicate the number of child page
+        childNodeID <key, rid> childNodeID <key, rid> childNodeID
+
+- Show your leaf-page (leaf node) design.
+
+    - Page Header: first 12 bytes of a page include
+        bool isLeaf;
+        short freespace;
+        short nextLeafId;
+        short parentNodeId;
+        short startOffset; 
+        short slotNum; 
+    - Page Tail: [slot][slot][slot]
+        Slot:
+            short offset;
+            short rLeng;
+    - Page Content: IndexPair <key, rid>
+
+5. Implementation Detail
+- Have you added your own source file (.cc or .h)?
+  No.
+
+- Have you implemented non-lazy deletion? Choose Yes or No: 
+  No
+
+- Have you implemented duplicated key handling that can span multiple pages? Choose Yes or No: 
+  If yes, please explain briefly how you have implemented this feature.
+  No
+
+- Other implementation details:
+
+    - Scan: to find the correct slot when page content change, each time the iterator gets to a 
+    new page, it updates the PageSlotNumber from the next page header. Every time we getNext(), 
+    we compare the PageSlotNumber and the curPageSlotNum from the header, if its different, we change 
+    current slot num to the right corresponding place. 
+
+    - Slots: we decide to use slots to track the offset and length of each record in each page. And we
+    always maintain the slots and records sorted. By doing so, it's easier to track varient length records 
+    and do the split.
+
+6. Other (optional)
+- Freely use this section to tell us about things that are related to the project 3, but not related to the other sections (optional)
+

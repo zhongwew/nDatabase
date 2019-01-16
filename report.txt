@@ -1,0 +1,37 @@
+Development Environment:
+    Operation system: macOS version 10.13.6 64 bits
+    Memory: 8G
+    gcc version: 5.4.0
+
+Design of Implementation:
+
+    PagedFileManager:
+        1. Hidden Page: 
+           
+            - the hidden page is the first page which is created by the function     
+              PagedFileManager::createFile and it not visible for user.
+
+            - store the number of page into the first 4 byte as a unsigned int type.
+
+     	    - store the records of  handle ID, number of read, write, append into hidden                                                                      
+             page after the number of page when the function FileHandle::closeFile is             
+             called. Each record contains 4 unsigned int number.
+         
+	2. File Handle ID:
+
+	    - each handle ID is the attribute of Class FileHandle , and it is created by 
+              PagedFileManager::openFile. 
+
+        3.  Relationship between PagedFileManager and FileHandle
+
+	    - FileHandle will get the name of the file created by PagedFileManager by the
+              function FileHandle::setFileName.
+    
+    FileHandle:
+
+	1. File* file
+	   
+	   - File* file is a file pointer which has the right to read and write the file 
+             which is a attribute of FileHandle shared by every function.
+
+            
